@@ -1,7 +1,7 @@
 # hdfshelper
 [![Go](https://github.com/pandalanax/hdfshelper/actions/workflows/go.yml/badge.svg)](https://github.com/pandalanax/hdfshelper/actions/workflows/go.yml)
 
-Do you find yourself constantly searching for config options in [Apache Hadoop](https://hadoop.apache.org/), this is for you.
+Do you find yourself constantly searching for config options in [Apache Hadoop](https://hadoop.apache.org/)? Then this is for you.
 Fuzzy find your way to the configuration option you're searching for.
 
 
