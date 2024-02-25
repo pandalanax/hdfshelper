@@ -45,9 +45,11 @@ Usage of hdfshelper:
   -v string
     	The version of hadoop in format: rx.y.z (e.g. r3.3.6)(shorthand) (default "current")
   -version string
-    	The version of hadoop in format: rx.y.z (e.g. r3.3.6) (default "current")```
+    	The version of hadoop in format: rx.y.z (e.g. r3.3.6) (default "current")
+```
 
 ## Building
+
 ```bash
 go build 
 ```
