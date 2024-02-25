@@ -6,27 +6,35 @@ import (
 	"io"
 	"log"
 	"net/http"
+
+	"github.com/fatih/color"
+	"github.com/ktr0731/go-fuzzyfinder"
 )
 
+//type Configuration struct {
+//	XMLName    xml.Name   `xml:"configuration"`
+//	Properties []Property `xml:"configuration>property"`
+//}
+//
+//type Property struct {
+//	XMLname     xml.Name `xml:"property"`
+//	Name        string   `xml:"name"`
+//	Value       string   `xml:"value"`
+//	Description string   `xml:"description"`
+//}
+
+// Configuration was generated 2024-02-25 13:50:16 by https://xml-to-go.github.io/ in Ukraine.
 type Configuration struct {
-	XMLName    xml.Name   `xml:"configuration"`
-	Properties []Property `xml:"property"`
-}
-
-type Property struct {
-	XMLname     xml.Name `xml:"property"`
-	Name        string   `xml:"name"`
-	Value       string   `xml:"value"`
-	Description string   `xml:"description"`
-}
-
-func (p Property) String() string {
-	return fmt.Sprintf("name=%v value=%v description=%v", p.Name, p.Value, p.Description)
+	XMLName  xml.Name `xml:"configuration"`
+	Property []struct {
+		XMLName     xml.Name `xml:"property"`
+		Name        string   `xml:"name"`
+		Value       string   `xml:"value"`
+		Description string   `xml:"description"`
+	} `xml:"property"`
 }
 
 func main() {
-	fmt.Println("Hello flake")
-
 	url := "https://hadoop.apache.org/docs/r2.4.1/hadoop-project-dist/hadoop-hdfs/hdfs-default.xml"
 
 	resp, err := http.Get(url)
@@ -45,9 +53,32 @@ func main() {
 
 	xml.Unmarshal(body, &config)
 
-	for i := 0; i < len(config.Properties); i++ {
-		fmt.Println("Name: " + config.Properties[i].Name)
-		fmt.Println("Value: " + config.Properties[i].Value)
-		fmt.Println("Desc: " + config.Properties[i].Description)
+	red := color.New(color.FgRed).SprintFunc()
+	yellow := color.New(color.FgYellow).SprintFunc()
+	idx, err := fuzzyfinder.FindMulti(
+		config.Property,
+		func(i int) string {
+			return config.Property[i].Name
+		},
+		fuzzyfinder.WithPreviewWindow(func(i, w, h int) string {
+			if i == -1 {
+				return ""
+			}
+			return fmt.Sprintf("Name: %s \nDefault: %s \n\nDescription: %s",
+				red(config.Property[i].Name),
+				yellow(config.Property[i].Value),
+				yellow(config.Property[i].Description))
+		}))
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, element := range idx {
+		// print out the xml snippet for copy
+		out, err := xml.MarshalIndent(config.Property[element], " ", "  ")
+		if err != nil {
+			log.Fatal(err)
+		}
+		fmt.Println(string(out))
 	}
 }

@@ -13,7 +13,7 @@
   buildGoApplication ? pkgs.buildGoApplication,
 }:
 buildGoApplication {
-  pname = "myapp";
+  pname = "hdfshelper";
   version = "0.1";
   pwd = ./.;
   src = ./.;
