@@ -19,6 +19,7 @@ hdfshelper -m core | pbcopy
 ```
 
 You can select more than one option to print with `<TAB>`.
+![screenshot of fuzzyfind](images/hdfshelper.png?raw=true "Screenshot with added option with <TAB>")
 
 ## Supports
 Currently the options below are supported. 
