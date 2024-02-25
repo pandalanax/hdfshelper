@@ -48,5 +48,5 @@ nix build
 ```
 
 ## Disclaimer
-I use this little program for learning go. Bugs, crashes and everything thats sucks are to be expected.
+I use this little program for learning go. Bugs, crashes and everything that sucks are to be expected.
 
