@@ -41,7 +41,7 @@ var (
 )
 
 func getUrls(version string) map[string]string {
-	baseUrl := "https://hadoop.apache.org/docs/r" // note the r
+	baseUrl := "https://hadoop.apache.org/docs/" // note the r
 	modes := map[string]string{
 		"core": baseUrl + version + "/hadoop-project-dist/hadoop-common/core-default.xml",
 		"hdfs": baseUrl + version + "/hadoop-project-dist/hadoop-hdfs/hdfs-default.xml",
@@ -58,7 +58,7 @@ func main() {
         - yarn [yarn-site.xml]
         - hdfs [hdfs-site.xml]`
 		defaultVersion = "current"
-		usageVersion   = "The version of hadoop in format: x.y.z (e.g. 3.3.6)"
+		usageVersion   = "The version of hadoop in format: rx.y.z (e.g. r3.3.6)"
 	)
 	flag.StringVar(&mode, "mode", defaultMode, usageMode)
 	flag.StringVar(&mode, "m", defaultMode, usageMode+"(shorthand)")

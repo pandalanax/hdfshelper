@@ -9,9 +9,9 @@ It prints out the xml ready to be pasted into the configuration file.
 
 
 ## Usage
-search all options from `hdfs-site.xml` on version `3.3.4`:
+search all options from `hdfs-site.xml` on version `r3.3.4`:
 ```bash
-hdfshelper -m hdfs -v 3.3.4
+hdfshelper -m hdfs -v r3.3.4
 ```
 
 copy the output to clipboard (macOS):
@@ -35,9 +35,9 @@ Usage of hdfshelper:
     	        - yarn [yarn-site.xml]
     	        - hdfs [hdfs-site.xml] (default "hdfs")
   -v string
-    	The version of hadoop in format: x.y.z (e.g. 3.3.6)(shorthand) (default "current")
+    	The version of hadoop in format: rx.y.z (e.g. r3.3.6)(shorthand) (default "current")
   -version string
-    	The version of hadoop in format: x.y.z (e.g. 3.3.6) (default "current")
+    	The version of hadoop in format: rx.y.z (e.g. r3.3.6) (default "current")
 ```
 
 ## Building
