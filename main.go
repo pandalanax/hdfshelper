@@ -35,12 +35,20 @@ type Configuration struct {
 	} `xml:"property"`
 }
 
-var modes = map[string]string{
-	"core": "https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/core-default.xml",
-	"hdfs": "https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/hdfs-default.xml",
-	"yarn": "https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-common/yarn-default.xml",
+var (
+	mode    string
+	version string
+)
+
+func getUrls(version string) map[string]string {
+	baseUrl := "https://hadoop.apache.org/docs/r" // note the r
+	modes := map[string]string{
+		"core": baseUrl + version + "/hadoop-project-dist/hadoop-common/core-default.xml",
+		"hdfs": baseUrl + version + "/hadoop-project-dist/hadoop-hdfs/hdfs-default.xml",
+		"yarn": baseUrl + version + "/hadoop-yarn/hadoop-yarn-common/yarn-default.xml",
+	}
+	return modes
 }
-var mode string
 
 func main() {
 	const (
@@ -49,15 +57,20 @@ func main() {
         - core [core-site.xml] 
         - yarn [yarn-site.xml]
         - hdfs [hdfs-site.xml]`
+		defaultVersion = "current"
+		usageVersion   = "The version of hadoop in format: x.y.z (e.g. 3.3.6)"
 	)
 	flag.StringVar(&mode, "mode", defaultMode, usageMode)
 	flag.StringVar(&mode, "m", defaultMode, usageMode+"(shorthand)")
+	flag.StringVar(&version, "version", defaultVersion, usageVersion)
+	flag.StringVar(&version, "v", defaultVersion, usageVersion+"(shorthand)")
 
 	flag.Parse()
 
 	//	fmt.Println(*mode)
+	modes := getUrls(version)
 	url, ok := modes[mode]
-
+	fmt.Println(modes)
 	if !ok {
 		log.Fatal("wrong mode. type --help for usage")
 	}
