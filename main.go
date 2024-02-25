@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/xml"
+	"flag"
 	"fmt"
 	"io"
 	"log"
@@ -34,14 +35,39 @@ type Configuration struct {
 	} `xml:"property"`
 }
 
+var modes = map[string]string{
+	"core": "https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-common/core-default.xml",
+	"hdfs": "https://hadoop.apache.org/docs/current/hadoop-project-dist/hadoop-hdfs/hdfs-default.xml",
+	"yarn": "https://hadoop.apache.org/docs/current/hadoop-yarn/hadoop-yarn-common/yarn-default.xml",
+}
+var mode string
+
 func main() {
-	url := "https://hadoop.apache.org/docs/r2.4.1/hadoop-project-dist/hadoop-hdfs/hdfs-default.xml"
+	const (
+		defaultMode = "hdfs"
+		usageMode   = `mode. decide which part of hdfs you want to configure and fuzzy find. Supported modes are: 
+        - core [core-site.xml] 
+        - yarn [yarn-site.xml]
+        - hdfs [hdfs-site.xml]`
+	)
+	flag.StringVar(&mode, "mode", defaultMode, usageMode)
+	flag.StringVar(&mode, "m", defaultMode, usageMode)
+
+	flag.Parse()
+
+	//	fmt.Println(*mode)
+	url, ok := modes[mode]
+
+	if !ok {
+		log.Fatal("wrong mode. type --help for usage")
+	}
 
 	resp, err := http.Get(url)
 	// if we os.Open returns an error then handle it
 	if err != nil {
 		fmt.Println(err)
 	}
+
 	// defer the closing of our xmlFile so that we can parse it later on
 	// We Read the response body on the line below.
 	body, err := io.ReadAll(resp.Body)
