@@ -28,5 +28,16 @@ Currently the options below are supported.
  - core-site.xml
  - hdfs-site.xml
 
+## Building
+```bash
+go build 
+```
+or 
+```bash
+nix build
+```
+
 ## Disclaimer
 I use this little program for learning go. Bugs, crashes and everything thats sucks are to be expected.
+
+
