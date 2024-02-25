@@ -51,7 +51,7 @@ func main() {
         - hdfs [hdfs-site.xml]`
 	)
 	flag.StringVar(&mode, "mode", defaultMode, usageMode)
-	flag.StringVar(&mode, "m", defaultMode, usageMode)
+	flag.StringVar(&mode, "m", defaultMode, usageMode+"(shorthand)")
 
 	flag.Parse()
 

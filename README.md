@@ -6,9 +6,17 @@ Fuzzy find your way to the configuration option you're searching for.
 
 
 ## Usage
+search all options from `hdfs-site.xml`:
+```bash
+hdfshelper -m hdfs
 ```
-TBA
+
+copy the output to clipboard (macOS):
+```bash
+hdfshelper -m core | pbcopy
 ```
+
+You can select more than one option to print with `<TAB>`.
 
 ## Supports
 Currently the options below are supported. 
