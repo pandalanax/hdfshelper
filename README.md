@@ -4,6 +4,8 @@
 Do you find yourself constantly searching for config options in [Apache Hadoop](https://hadoop.apache.org/)? Then this is for you.
 Fuzzy find your way to the configuration option you're searching for. By default it pulls the options for the latest version aka `current`.
 
+It prints out the xml ready to be pasted into the configuration file.
+
 
 
 ## Usage
