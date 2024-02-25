@@ -36,8 +36,9 @@ type Configuration struct {
 }
 
 var (
-	mode    string
-	version string
+	mode     string
+	version  string
+	fzf_desc bool
 )
 
 func getUrls(version string) map[string]string {
@@ -59,18 +60,21 @@ func main() {
         - hdfs [hdfs-site.xml]`
 		defaultVersion = "current"
 		usageVersion   = "The version of hadoop in format: rx.y.z (e.g. r3.3.6)"
+		defaultSwitch  = false
+		usageSwitch    = "Wether to search in configuration names or descriptions"
 	)
 	flag.StringVar(&mode, "mode", defaultMode, usageMode)
 	flag.StringVar(&mode, "m", defaultMode, usageMode+"(shorthand)")
 	flag.StringVar(&version, "version", defaultVersion, usageVersion)
 	flag.StringVar(&version, "v", defaultVersion, usageVersion+"(shorthand)")
+	flag.BoolVar(&fzf_desc, "switch", defaultSwitch, usageSwitch)
+	flag.BoolVar(&fzf_desc, "s", defaultSwitch, usageSwitch+"(shorthand)")
 
 	flag.Parse()
 
 	//	fmt.Println(*mode)
 	modes := getUrls(version)
 	url, ok := modes[mode]
-	fmt.Println(modes)
 	if !ok {
 		log.Fatal("wrong mode. type --help for usage")
 	}
@@ -97,6 +101,9 @@ func main() {
 	idx, err := fuzzyfinder.FindMulti(
 		config.Property,
 		func(i int) string {
+			if fzf_desc {
+				return config.Property[i].Description
+			}
 			return config.Property[i].Name
 		},
 		fuzzyfinder.WithPreviewWindow(func(i, w, h int) string {

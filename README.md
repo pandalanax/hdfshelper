@@ -19,6 +19,11 @@ copy the output to clipboard (macOS):
 hdfshelper -m core | pbcopy
 ```
 
+search the description instead of the name (switch):
+```bash
+hdfshelper -s true
+```
+
 You can select more than one option to print with `<TAB>`.
 ![screenshot of fuzzyfind](images/hdfshelper.png?raw=true "Screenshot with added option with <TAB>")
 
@@ -34,11 +39,13 @@ Usage of hdfshelper:
     	        - core [core-site.xml]
     	        - yarn [yarn-site.xml]
     	        - hdfs [hdfs-site.xml] (default "hdfs")
+  -s	Wether to search in configuration names or descriptions(shorthand)
+  -switch
+    	Wether to search in configuration names or descriptions
   -v string
     	The version of hadoop in format: rx.y.z (e.g. r3.3.6)(shorthand) (default "current")
   -version string
-    	The version of hadoop in format: rx.y.z (e.g. r3.3.6) (default "current")
-```
+    	The version of hadoop in format: rx.y.z (e.g. r3.3.6) (default "current")```
 
 ## Building
 ```bash
