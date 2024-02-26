@@ -2,3 +2,5 @@
 hdfshelper
 main
 result
+.envrc
+.direnv/

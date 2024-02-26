@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/fatih/color"
 	"github.com/ktr0731/go-fuzzyfinder"
@@ -125,6 +126,7 @@ func main() {
 		if err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println(string(out))
+		output := string(out)
+		fmt.Println(strings.Replace(output, "&#xA;", "\n", -1))
 	}
 }
