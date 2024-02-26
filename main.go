@@ -13,18 +13,6 @@ import (
 	"github.com/ktr0731/go-fuzzyfinder"
 )
 
-//type Configuration struct {
-//	XMLName    xml.Name   `xml:"configuration"`
-//	Properties []Property `xml:"configuration>property"`
-//}
-//
-//type Property struct {
-//	XMLname     xml.Name `xml:"property"`
-//	Name        string   `xml:"name"`
-//	Value       string   `xml:"value"`
-//	Description string   `xml:"description"`
-//}
-
 // Configuration was generated 2024-02-25 13:50:16 by https://xml-to-go.github.io/ in Ukraine.
 type Configuration struct {
 	XMLName  xml.Name `xml:"configuration"`
@@ -40,15 +28,19 @@ var (
 	mode     string
 	version  string
 	fzf_desc bool
+	red      = color.New(color.FgRed).SprintFunc()
+	yellow   = color.New(color.FgYellow).SprintFunc()
 )
 
 func getUrls(version string) map[string]string {
 	baseUrl := "https://hadoop.apache.org/docs/" // note the r
+
 	modes := map[string]string{
 		"core": baseUrl + version + "/hadoop-project-dist/hadoop-common/core-default.xml",
 		"hdfs": baseUrl + version + "/hadoop-project-dist/hadoop-hdfs/hdfs-default.xml",
 		"yarn": baseUrl + version + "/hadoop-yarn/hadoop-yarn-common/yarn-default.xml",
 	}
+
 	return modes
 }
 
@@ -64,6 +56,7 @@ func main() {
 		defaultSwitch  = false
 		usageSwitch    = "Wether to search in configuration names or descriptions"
 	)
+
 	flag.StringVar(&mode, "mode", defaultMode, usageMode)
 	flag.StringVar(&mode, "m", defaultMode, usageMode+"(shorthand)")
 	flag.StringVar(&version, "version", defaultVersion, usageVersion)
@@ -81,13 +74,10 @@ func main() {
 	}
 
 	resp, err := http.Get(url)
-	// if we os.Open returns an error then handle it
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	// defer the closing of our xmlFile so that we can parse it later on
-	// We Read the response body on the line below.
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		log.Fatalln(err)
@@ -97,8 +87,6 @@ func main() {
 
 	xml.Unmarshal(body, &config)
 
-	red := color.New(color.FgRed).SprintFunc()
-	yellow := color.New(color.FgYellow).SprintFunc()
 	idx, err := fuzzyfinder.FindMulti(
 		config.Property,
 		func(i int) string {
@@ -127,6 +115,6 @@ func main() {
 			log.Fatal(err)
 		}
 		output := string(out)
-		fmt.Println(strings.Replace(output, "&#xA;", "\n", -1))
+		fmt.Println(red(strings.Replace(output, "&#xA;", "\n", -1)))
 	}
 }
